@@ -2,78 +2,193 @@
 
 ## 📊 Project Overview
 
-This project implements a complete machine learning pipeline to detect fake news from True and Fake news datasets.
+A complete machine learning web application to detect fake news from text or URLs. The project includes:
+- **Backend**: Flask API with ML model (Random Forest - 99.73% accuracy)
+- **Frontend**: React + TypeScript with shadcn-ui and Tailwind CSS
 
 ## 🏆 Model Comparison Results
 
-| Rank | Model | Accuracy | Train Time (s) | Prediction Time (s) |
-|------|-------|----------|----------------|---------------------|
-| 🥇 1 | **Random Forest** | **99.73%** | 13.17 | 0.163 |
-| 🥈 2 | Gradient Boosting | 99.60% | 487.44 | 0.117 |
-| 🥉 3 | Decision Tree | 99.54% | 22.20 | 0.018 |
-| 4 | SVM (Linear) | 99.47% | 1.29 | 0.010 |
-| 5 | Logistic Regression | 99.01% | 0.71 | 0.004 |
-| 6 | Naive Bayes (Multinomial) | 95.22% | 0.04 | 0.011 |
-| 7 | K-Nearest Neighbors | 89.44% | 0.33 | 35.70 |
+| Rank | Model | Accuracy |
+|------|-------|----------|
+| 🥇 1 | **Random Forest** | **99.73%** |
+| 🥈 2 | Gradient Boosting | 99.60% |
+| 🥉 3 | Decision Tree | 99.54% |
+| 4 | SVM (Linear) | 99.47% |
+| 5 | Logistic Regression | 99.01% |
 
-## 🏆 Best Model: Random Forest
+## 📁 Project Structure
 
-- **Accuracy**: 99.73%
-- **Training Time**: 13.17 seconds
-- **Prediction Time**: 0.163 seconds
+```
+news-detection/
+├── backend/
+│   ├── app.py              # Flask API
+│   ├── fake_news_detection.py  # Model training
+│   ├── fake_news_model.pkl     # Trained model
+│   ├── requirements.txt        # Python dependencies
+│   ├── True.csv           # True news dataset
+│   └── Fake.csv           # Fake news dataset
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── pages/         # Page components
+│   │   ├── lib/           # Utilities & API
+│   │   └── hooks/         # Custom React hooks
+│   ├── api/               # Vercel serverless API
+│   ├── package.json       # Node dependencies
+│   └── vercel.json       # Vercel config
+└── README.md
+```
 
-## 📁 Files
+## 🚀 How to Run Locally
 
-- `fake_news_detection.py` - Main Python script
-- `True.csv` - Dataset containing true news articles
-- `Fake.csv` - Dataset containing fake news articles
-- `model_comparison.csv` - Model comparison results
-- `README.md` - This file
-
-## 🚀 How to Run
+### Backend (Flask API)
 
 ```
 bash
-python fake_news_detection.py
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the API
+python app.py
 ```
 
-## 📈 Dataset Statistics
+The API will be available at `http://localhost:5000`
 
-- **Total samples**: ~44,910
-- **True News**: 21,419
-- **Fake News**: 23,491
-- **Features**: TF-IDF (10,000 features)
-- **Train/Test Split**: 80/20
+### Frontend (React)
 
-## 🔧 Features Used
+```
+bash
+# Navigate to frontend directory
+cd frontend
 
-- **Text Cleaning**: Lowercase, URL removal, HTML removal, punctuation removal
-- **Feature Extraction**: TF-IDF Vectorization
-  - Max features: 10,000
-  - N-gram range: (1, 2)
-  - Min document frequency: 2
-  - Max document frequency: 0.95
-  - Stop words: English
+# Install dependencies
+npm install
 
-## 🧠 Models Implemented
+# Run development server
+npm run dev
+```
 
-1. **Logistic Regression** - Linear model, 99.01% accuracy
-2. **Naive Bayes (Multinomial)** - Probabilistic model, 95.22% accuracy
-3. **SVM (Linear)** - Support Vector Machine, 99.47% accuracy
-4. **Random Forest** - Ensemble method, 99.73% accuracy ⭐ BEST
-5. **Decision Tree** - Tree-based model, 99.54% accuracy
-6. **Gradient Boosting** - Boosting method, 99.60% accuracy
-7. **K-Nearest Neighbors** - Instance-based, 89.44% accuracy
-8. **XGBoost** - Advanced boosting (if available)
+The frontend will be available at `http://localhost:8080`
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/health` | Health check |
+| POST | `/api/detect` | Detect fake news (single text) |
+| POST | `/api/detect-url` | Detect fake news from URL |
+| POST | `/api/detect-batch` | Detect fake news (multiple texts) |
+
+### Example Request
+
+```
+bash
+curl -X POST http://localhost:5000/api/detect \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Your news article text here"}'
+```
+
+### Example Response
+
+```
+json
+{
+  "result": "FAKE",
+  "is_fake": true,
+  "confidence": 98.5,
+  "confidence_fake": 98.5,
+  "confidence_real": 1.5,
+  "explanation": "Our AI detected sensationalist language...",
+  "model_used": "Random Forest",
+  "model_accuracy": 99.73
+}
+```
+
+## 🌐 Deploy to Vercel
+
+### Option 1: Deploy Frontend + Serverless API
+
+```
+bash
+cd frontend
+
+# Install Vercel CLI
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy
+vercel --yes
+```
+
+### Option 2: Separate Deployments
+
+- **Frontend**: Deploy the `frontend` folder to Vercel, Netlify, or any static hosting
+- **Backend**: Deploy to Render, Railway, or PythonAnywhere
+
+## 🔧 Features
+
+- ✅ Text-based fake news detection
+- ✅ URL-based fake news detection
+- ✅ Batch processing for multiple articles
+- ✅ Confidence scores with explanations
+- ✅ Real-time health monitoring
+- ✅ Modern, responsive UI
+- ✅ Dark/Light theme support
+
+## 🛠️ Technologies Used
+
+### Backend
+- Python 3.x
+- Flask + Flask-CORS
+- scikit-learn (Random Forest)
+- pandas, numpy
+- BeautifulSoup4 (for URL extraction)
+
+### Frontend
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- Framer Motion
 
 ## 📝 Requirements
 
-- Python 3.x
-- pandas
-- numpy
-- scikit-learn
-- xgboost (optional)
+### Backend
+```
+flask>=2.3.0
+flask-cors>=4.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+```
 
-## 📋 Conclusion
+### Frontend
+```
+node.js >= 18
+npm >= 9
+```
 
-The **Random Forest** classifier achieved the best performance with **99.73% accuracy**, making it the recommended model for fake news detection in this dataset. It provides an excellent balance between accuracy and computational efficiency.
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is for educational purposes.
+
+---
+
+**Note**: The trained model (`fake_news_model.pkl`) is already included. To retrain, run `python fake_news_detection.py` in the backend folder.

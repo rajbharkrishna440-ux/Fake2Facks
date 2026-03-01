@@ -18,7 +18,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Load the trained model and TF-IDF vectorizer
-MODEL_PATH = 'fake_news_model.pkl'
+import os
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'fake_news_model.pkl')
 
 try:
     with open(MODEL_PATH, 'rb') as f:
