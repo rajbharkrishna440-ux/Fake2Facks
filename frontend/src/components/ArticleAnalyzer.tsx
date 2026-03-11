@@ -66,6 +66,12 @@ export function ArticleAnalyzer() {
         </div>
 
         <div className="container relative max-w-3xl text-center">
+          {/* Website Name */}
+          <div className="animate-fade-in mb-6">
+            <h2 className="text-3xl font-bold text-primary">TruthGuard</h2>
+            <p className="text-sm text-muted-foreground mt-1">Fake News Detection</p>
+          </div>
+
           {/* Badge */}
           <div className="animate-fade-in mb-6 inline-flex items-center gap-2 rounded-full border bg-card/60 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm shadow-lg">
             <Sparkles className="h-3.5 w-3.5 text-warning" />

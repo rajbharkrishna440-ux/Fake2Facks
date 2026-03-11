@@ -8,7 +8,11 @@ interface ResultCardProps {
 
 export function ResultCard({ result, index }: ResultCardProps) {
   const isFake = result.is_fake;
-  const pct = (result.confidence * 100).toFixed(1);
+  const confidenceValue = typeof result.confidence === "number"
+    ? result.confidence <= 1
+      ? (result.confidence * 100).toFixed(1)
+      : result.confidence.toFixed(1)
+    : result.confidence;
 
   return (
     <div
@@ -46,7 +50,7 @@ export function ResultCard({ result, index }: ResultCardProps) {
             isFake ? "bg-destructive/10" : "bg-success/10"
           }`}
         >
-          <p className="font-display text-xl font-bold leading-none">{pct}%</p>
+          <p className="font-display text-xl font-bold leading-none">{confidenceValue}%</p>
           <p className="mt-0.5 text-[10px] font-medium uppercase tracking-wider opacity-60">
             confidence
           </p>
@@ -59,7 +63,7 @@ export function ResultCard({ result, index }: ResultCardProps) {
           className={`h-full rounded-full animate-bar-fill ${
             isFake ? "bg-destructive" : "bg-success"
           }`}
-          style={{ "--bar-width": `${pct}%` } as React.CSSProperties}
+          style={{ "--bar-width": `${confidenceValue}%` } as React.CSSProperties}
         />
       </div>
 
